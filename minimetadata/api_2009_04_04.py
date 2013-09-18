@@ -6,19 +6,30 @@ import argparse
 import pprint
 
 import bottle
+import pystache
 
 from .mddict import MDDict
+from . import utils
 
 app = bottle.Bottle()
 metadata = MDDict()
 userdata = None
 
 def value_or_file(v):
+    '''If v starts with @, interpret the remainder of the string as a
+    filename and return the contents of that file.  Otherwise return the
+    raw value of v.'''
+
     if v.startswith('@'):
-        with open(v[1:]) as fd:
+        with open(os.path.expanduser(v[1:])) as fd:
             v = fd.read()
 
-    return v
+    ctx = {}
+    if bottle.request.remote_addr is not None:
+        ctx['client_ip'] = bottle.request.remote_addr
+        ctx['client_ip_as_hex'] = '{:0X}'.format(utils.ip2long(bottle.request.remote_addr))
+
+    return pystache.render(v, ctx)
 
 @app.route('/meta-data/')
 def get_metadata_index():
@@ -66,8 +77,8 @@ def get_metadata_value(key):
         
             # Return the value of the requested key.
             return value_or_file(v)
-    except KeyError:
-        bottle.abort(404)
+    except KeyError as detail:
+        bottle.abort(404, 'Failed to find {:s}'.format(detail))
 
 @app.route('/user-data/')
 def get_userdata():
