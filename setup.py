@@ -2,9 +2,8 @@
 import setuptools
 
 setuptools.setup(
-#    install_requires=open('requires.txt').readlines(),
+    install_requires=open('requires.txt').readlines(),
     packages = ['minimetadata'],
-    install_requires = open('requires.txt').readlines(),
     entry_points = {
         'console_scripts': [
             'minimetadata=minimetadata.main:main',
