@@ -26,8 +26,8 @@ def parse_args():
     p = argparse.ArgumentParser()
     p.add_argument('--config', '-f',
             default='metadata.yaml')
-    p.add_argument('--port', '-p', default=80, type=int)
-    p.add_argument('--bind', '-b', default='localhost')
+    p.add_argument('--port', '-p', default=8775, type=int)
+    p.add_argument('--bind', '-b', default='0.0.0.0')
 
     return p.parse_args()
 

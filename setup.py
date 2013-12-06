@@ -2,6 +2,7 @@
 import setuptools
 
 setuptools.setup(
+    name='minimetadata',
     install_requires=open('requires.txt').readlines(),
     packages = ['minimetadata'],
     entry_points = {
