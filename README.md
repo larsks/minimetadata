@@ -4,6 +4,22 @@ This is a very simple implementation of the OpenStack/EC2 metadata
 service.  It listens by default on port 8775 and serves data defined
 in a YAML configuration file.
 
+## Options
+
+- `--config`, `-f` *CONFIG* -- path to a YAML configuration file
+- `--port`, `-p` *PORT* -- port on which to listen (default 8775)
+- `--bind`, `-b` *ADDRESS* -- address on which to bind (default
+  "0.0.0.0")
+
+## Installation
+
+As with other Python packages:
+
+    # python setup.py install
+
+When this completes, you should have a new command `minimetadata`
+available.
+
 ## Configuration
 
 Here is a sample configuration file:
