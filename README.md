@@ -24,10 +24,42 @@ derived from the ip address of the requesting client.  This also sets
 Generally:
 
 - A request to `.../meta-data/foo` will return the value of `foo`
-  under the `meta-data` key in your YAML file.
+  under the `meta-data` key in your configuration file.
 - If the value starts with `@`, the remainder of the value will be
   interpreted as a filesystem path and the contents of that file will
   be returned to the client.
+- A request to `.../user-data/` will return the value of the
+  `user-data` key in your configuration file, treating `@` the same as
+  for `meta-data`.
+
+Given the above configuration:
+
+    $ curl -s  http://169.254.169.254/latest/meta-data/
+    public-keys/
+    instance-id
+
+And:
+
+    $ curl -s  http://169.2latest/meta-data/public-keys/
+    0=item0
+
+And:
+
+    $ curl -s  http://169.254.1latest/meta-data/public-keys/0/
+    openssh-key
+
+And finally:
+
+    $ curl -s  http://169.2latest/meta-data/public-keys/0/openssh-key
+    ssh-rsa AAAAB3Nz...
+
+And also:
+
+    $ curl -s  http://169.254.169.254/latest/user-data/
+    #!/bin/sh
+    rsync -rp /home/cloud/.ssh/ /root/.ssh
+    fixfiles restore /root/
+
 
 ## Access from your instances
 
